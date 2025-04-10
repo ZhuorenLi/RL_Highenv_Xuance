@@ -1,0 +1,38 @@
+agent: "HyAR-TD3"
+#env_name: "highway"
+env: "Platform-v0"
+policy: "P-TD3" # Policy name (TD3, DDPG or OurDDPG)
+render_mode: "human"
+
+#representation_hidden_size: [256,]
+#actor_hidden_size: [256,256,]
+#critic_hidden_size: [256,256,]
+
+seed: 0 # Sets Gym, PyTorch and Numpy seeds
+batch_size: 128 # Batch size for both actor and critic
+#n_size: 30000
+gamma: 0.95
+tau: 0.005 # Target network update rate
+
+start_timesteps: 128  # Time steps initial random policy is used
+eval_freq: 20000 # How often (time steps) we evaluate   # 500
+#max_episodes: 500000 # Max time steps to run environment
+#max_embedding_episodes: 100000
+max_timesteps: 300   #200000
+
+epsilon_steps: 1000
+expl_noise_initial: 1.0 # Std of Gaussian exploration noise 1.0
+expl_noise: 0.1 # Std of Gaussian exploration noise 0.1
+
+relable_steps: 1000 # Max time steps relable
+relable_initial: 1.0
+relable_final: 0.0
+
+discount: 0.99 # Discount factor
+policy_noise: 0.1  # Noise added to target policy during critic update
+noise_clip: 0.5 # Range to clip target policy noise
+policy_freq: 2 # Frequency of delayed policy updates
+
+
+#log_dir: "./logs/HyAR/"
+#model_dir: "./models/HyAR/"

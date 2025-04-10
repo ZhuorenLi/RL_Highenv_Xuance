@@ -1,0 +1,73 @@
+dl_toolbox: "torch"  # The deep learning toolbox. Choices: "torch", "mindspore", "tensorlayer"
+project_name: ""
+logger: "tensorboard"  # Choices: tensorboard, wandb.
+wandb_user_name: "your_user_name"
+render: True
+render_mode: 'human' # Choices: 'human', 'rgb_array'.
+fps: 50
+test_mode: False
+device: "cpu"
+
+agent: "DQN"
+env_name: "Highway"
+env_id: "highway-v0"
+RGBImgPartialObsWrapper: False
+ImgObsWrapper: False
+vectorize: "DummyVecEnv"
+learner: "DQN_Learner"
+policy: "Basic_Q_network"
+representation: "Basic_Identical"
+runner: "DRL"
+action_type:   # 由is_use_old_discrete_action决定
+
+is_use_trajectory: False     # 是否基于轨迹行驶
+is_use_old_discrete_action: True
+
+is_record_driving_data: True   # 将行驶过程中的数据存入csv
+is_show_env_with_plt: False   # plot绘制场景
+is_show_data_details: True   # 实时显示动作、车辆状态信息
+is_do_collision_prediction: False   # 基于采样进行轨迹风险检测
+is_check_traj_risk_PF: False    # 基于势场进行轨迹风险检测
+
+representation_hidden_size:
+q_hidden_size: [256, 256, 256]
+activation: 'relu'
+
+seed: 1
+parallels: 1
+buffer_size: 40000
+batch_size: 256
+learning_rate: 0.0001
+gamma: 0.9
+
+start_greedy: 0.5
+end_greedy: 0.01
+decay_step_greedy: 20000
+sync_frequency: 50
+training_frequency: 1
+running_steps: 150  #
+start_training: 2
+max_episode_steps:
+
+use_grad_clip: False  # gradient normalization
+grad_clip_norm: 0.5
+use_actions_mask: False
+use_obsnorm: False
+use_rewnorm: False
+obsnorm_range: 5
+rewnorm_range: 5
+
+#test_steps: 100   # not used
+test_episode: 200
+use_HighD_test: False
+total_highd_test_episode: 200  # 使用HighD时总的episode数目
+using_only_init_HD: False   # 背景车辆的行为由IDM控制，HighD仅用于生成初始状态
+
+log_dir: "./logs/dqn/"
+model_dir: "./models/dqn/"
+data_record_dir: "./data_record/dqn/"
+
+# 暂时未用到
+is_pure_HD: False
+getting_chosen_hd_speed: False
+using_IDM_EV: False

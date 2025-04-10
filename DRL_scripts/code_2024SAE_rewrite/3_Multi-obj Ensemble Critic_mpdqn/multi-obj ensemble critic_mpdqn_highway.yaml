@@ -1,0 +1,80 @@
+dl_toolbox: "torch"  # The deep learning toolbox. Choices: "torch", "mindspore", "tensorlayer"
+project_name: ""
+logger: "tensorboard"  # Choices: tensorboard, wandb.
+wandb_user_name: "your_user_name"
+render: False
+render_mode: 'human' # Choices: 'human', 'rgb_array'.
+fps: 50
+test_mode: False
+device: "cpu"
+
+agent: "MultiObj_Ensemble_MPDQN"
+env_name: "Highway"
+env_id: "highway-v0"
+vectorize: "DummyVecEnv"
+learner: "MultiObj_Ensemble_MPDQN_Learner"
+policy: "MultiObj_Ensemble_MPDQNPolicy"
+representation: "Basic_Identical"
+runner: "DRL"
+action_type: "ParameterizedAction"
+
+is_use_attention: False   # 是否基于注意力机制
+
+is_record_driving_data: True   # 将行驶过程中的数据存入csv
+is_show_env_with_plt: True   # plot绘制场景
+is_show_data_details: True   # 实时显示动作、车辆状态信息
+is_do_collision_prediction: False   # 基于采样进行轨迹风险检测
+is_check_traj_risk_PF: False    # 基于势场进行轨迹风险检测
+use_epi_uncertainty_select_action: True   # 基于认知不确定性进行探索
+is_show_epi_data: True   # 是否实时显示各动作的认知不确定性
+
+representation_hidden_size:
+conactor_hidden_size: [256, 256, 256,]
+qnetwork_hidden_size: [256, 256, 256,]
+activation: "leaky_relu"
+activation_action: 'tanh'
+
+seed: 1
+parallels: 1
+buffer_size: 40000
+batch_size: 128
+conactor_learning_rate: 0.0001
+qnetwork_learning_rate: 0.0001
+gamma: 0.95
+tau: 0.005
+Ensemble_K: 5
+omega_c_safe_critic: 0.5   # 求总价值函数时，safe-critic对应值函数的常数权重
+k_con: 0.1   # 连续动作扰动系数
+epistemic_uncertainty_threshold: 0.1   # 根据认知不确定性选择离散动作时的认知不确定性阈值
+
+loss_td_weight: 0.5     # 每个critic的td loss
+loss_mean_weight: 0.2    # 每一类critic的平均值的td loss
+loss_all_weight: 0.2     # 所有critic的td loss
+loss_conv_weight: 0.1   # 使每类中的critic都趋向于一致的loss
+
+start_greedy: 0.5
+end_greedy: 0.01
+decay_step_greedy: 40000  # 在decay_step_greedy个step后减弱为end_greedy
+start_noise: 0.2   # noise从均值为0的高斯分布中随机选取，0.2为高斯分布的标准差
+end_noise: 0.001
+decay_step_noise: 40000  # 在decay_step_noise个step后减弱为end_noise
+
+training_frequency: 1
+running_steps: 200
+start_training: 5
+max_episode_steps:
+
+use_grad_clip: False  # gradient normalization
+grad_clip_norm: 0.5
+use_actions_mask: False
+use_obsnorm: False
+use_rewnorm: False
+obsnorm_range: 5
+rewnorm_range: 5
+
+#test_steps: 10  # not used
+test_episode: 100  #
+
+log_dir: "./logs/MEC_mpdqn/"
+model_dir: "./models/MEC_mpdqn/"
+data_record_dir: "./data_record/MEC_mpdqn/"

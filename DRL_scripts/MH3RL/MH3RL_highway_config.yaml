@@ -1,0 +1,76 @@
+##################### public  #######################
+agent: "MH3RL"
+env_name: "highway"
+env_id: "highway-v0"
+vectorize: "Dummy_Gym"
+policy: "MH3RL_Policy"
+representation: "Basic_Identical"
+runner: "DRL"
+activation: "ReLU"  #
+
+is_record_driving_data: True
+is_show_env_with_plt: True
+is_show_actions_detail: False   # 是否展示动作细节
+is_do_collision_prediction: False   # 基于采样进行轨迹风险检测
+is_check_traj_risk_PF: True    # 基于势场进行轨迹风险检测
+
+is_do_action_intervention: False # 是否进行动作干预
+unsafe_point_threshold: 2  # 危险点数量阈值
+init_unsafe_attention_degree: 0  # 初始危险关注程度
+final_unsafe_attention_degree: 0.9 # 最终危险关注程度
+change_unsafe_attention_steps: 0.8  # 占总训练steps的比例
+
+seed: 1
+tau: 0.005
+
+start_noise: 0.1
+end_noise: 0.01
+running_steps: 500000
+
+test_steps: 10  # not used
+test_episode: 100  #
+
+use_obsnorm: False
+use_rewnorm: False
+obsnorm_range: 5
+rewnorm_range: 5
+
+log_dir: "./logs/MH3RL/"
+model_dir: "./models/MH3RL/"
+data_record_dir: "./data_record/MH3RL/"
+
+##################### up-layer  #######################
+
+up_actor_hidden_size: [256,128]
+up_qnetwork_hidden_size: [256,128]
+up_actor_learning_rate: 0.0001
+up_qnetwork_learning_rate: 0.0001
+
+up_start_greedy: 0.5
+up_end_greedy: 0.01
+up_decay_step_greedy: 200000  # 在decay_step_greedy个step后减弱为end_greedy
+
+D1_nsize: 20000
+D1_batchsize: 128
+up_gamma: 0.95
+up_start_training_steps: 200
+
+up_training_frequency: 2
+
+##################### low-layer  #######################
+low_actor_hidden_size: [256,128,]
+low_qnetwork_hidden_size: [256,128,]
+low_extend_obs_multiple: 1
+
+low_actor_learning_rate: 0.00001
+low_qnetwork_learning_rate: 0.0001
+
+D2_nsize: 20000
+D2_batchsize: 128
+low_gamma: 0.95
+low_start_training_steps: 500
+
+low_training_frequency: 2
+low_action_max_steps: 10
+
+

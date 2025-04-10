@@ -1,0 +1,127 @@
+dl_toolbox: "torch"  # The deep learning toolbox. Choices: "torch", "mindspore", "tensorlayer"
+project_name: "XuanCe_Benchmark"
+logger: "tensorboard"  # Choices: tensorboard, wandb.
+wandb_user_name: "your_user_name"
+render: False
+render_mode: 'human' # Choices: 'human', 'rgb_array'.
+fps: 50
+test_mode: False
+device: "cpu"
+
+agent: "Attn_SAC"
+env_name: "Highway"
+env_id: "highway-v0"
+vectorize: "DummyVecEnv"
+learner: "SAC_Learner"
+policy: "Gaussian_Attn_SAC"
+representation: "Basic_Identical"
+runner: "DRL"
+action_type: "ContHybridDiscAction"
+
+is_display_attention_matrix: True
+
+is_record_driving_data: True   # 将行驶过程中的数据存入csv
+is_show_env_with_plt: True   # plot绘制场景
+is_show_data_details: True   # 实时显示动作、车辆状态信息
+is_do_collision_prediction: False   # 基于采样进行轨迹风险检测
+is_check_traj_risk_PF: False    # 基于势场进行轨迹风险检测
+
+representation_hidden_size:
+actor_hidden_size: [256, 256]
+critic_hidden_size: [256,]
+activation: "leaky_relu"
+activation_action: 'tanh'
+
+seed: 1
+parallels: 1  # number of environments
+buffer_size: 150000
+batch_size: 256
+actor_learning_rate: 0.0003
+critic_learning_rate: 0.003
+gamma: 0.95
+alpha: 0.2
+use_automatic_entropy_tuning: True
+tau: 0.005
+
+training_frequency: 1
+running_steps: 200
+start_training: 2
+max_episode_steps:
+
+use_grad_clip: True  # gradient normalization
+clip_type: 1  # Gradient clip for Mindspore: 0: ms.ops.clip_by_value; 1: ms.nn.ClipByNorm()
+grad_clip_norm: 1.0
+use_actions_mask: False
+use_obsnorm: False
+use_rewnorm: False
+obsnorm_range: 5
+rewnorm_range: 5
+
+#test_steps: 10
+test_episode: 100
+
+log_dir: "./logs/attn_sac_CHD/"
+model_dir: "./models/attn_sac_CHD/"
+data_record_dir: "./data_record/attn_sac_CHD/"
+
+#actor的attention参数
+actor_attention_net_config: {
+"type": "EgoAttentionNetwork",
+"feature_size": 256,
+"embedding_layer": {
+  "type": "MultiLayerPerceptron",
+  "layers": [256,],
+  "reshape": False,
+  "in": 7,    # 7--每个车的特征个数
+    "activation": "GELU",
+},
+"others_embedding_layer": {
+  "type": "MultiLayerPerceptron",
+  "layers": [256,],
+  "reshape": False,
+  "in": 7,    # 7--每个车的特征个数
+},
+# "self_attention_layer": ,
+"self_attention_layer": {
+  "type": "SelfAttention",
+  "feature_size": 256,
+  "heads": 2
+},
+"ego_attention_layer": {
+  "type": "EgoAttention",
+  "feature_size": 256,
+  "heads": 4
+},
+"out": None
+}
+
+#critic的attention参数
+critic_attention_net_config: {
+"type": "EgoAttentionNetwork",
+"feature_size": 256,
+"embedding_layer": {
+  "type": "MultiLayerPerceptron",
+  "layers": [256,],
+  "reshape": False,
+  "in": ,    # 7 + action_dim  xuance/torch/policies/core.py
+  "activation": "GELU",
+},
+"others_embedding_layer": {
+  "type": "MultiLayerPerceptron",
+  "layers": [256,],
+  "reshape": False,
+  "in": 7,    # 7--每个车的特征个数
+},
+ "self_attention_layer": ,
+#"self_attention_layer": {
+#  "type": "SelfAttention",
+#  "feature_size": 256,
+#  "heads": 2
+#},
+"ego_attention_layer": {
+  "type": "EgoAttention",
+  "feature_size": 256,
+  "heads": 4
+},
+"out": None
+}

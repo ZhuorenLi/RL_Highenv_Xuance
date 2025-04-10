@@ -1,0 +1,68 @@
+dl_toolbox: "torch"  # The deep learning toolbox. Choices: "torch", "mindspore", "tensorlayer"
+project_name: ""
+logger: "tensorboard"  # Choices: tensorboard, wandb.
+wandb_user_name: "your_user_name"
+render: True
+render_mode: 'human' # Choices: 'human', 'rgb_array'.
+fps: 50
+test_mode: False
+device: "cpu"
+
+agent: "SAC"
+env_name: "Highway"
+env_id: "highway-v0"
+vectorize: "DummyVecEnv"
+learner: "SAC_Learner"
+policy: "Gaussian_SAC"
+representation: "Basic_Identical"
+runner: "DRL"
+action_type: "NewContinuousAction"
+
+is_record_driving_data: True   # 将行驶过程中的数据存入csv
+is_show_data_details: True   # 实时显示动作、车辆状态信息
+
+representation_hidden_size:
+actor_hidden_size: [256, 256, 256,]
+critic_hidden_size: [256, 256, 256,]
+activation: "leaky_relu"
+activation_action: 'tanh'
+
+seed: 4
+parallels: 1  # number of environments
+buffer_size: 200000
+batch_size: 256
+actor_learning_rate: 0.0001
+critic_learning_rate: 0.0001
+gamma: 0.99
+alpha: 0.2
+use_automatic_entropy_tuning: True
+tau: 0.005
+
+training_frequency: 1
+running_steps: 600
+start_training: 1
+max_episode_steps:
+
+use_grad_clip: False  # gradient normalization
+clip_type: 1  # Gradient clip for Mindspore: 0: ms.ops.clip_by_value; 1: ms.nn.ClipByNorm()
+grad_clip_norm: 0.5
+use_actions_mask: False
+use_obsnorm: False
+use_rewnorm: False
+obsnorm_range: 5
+rewnorm_range: 5
+
+#test_steps: 10
+test_episode: 200
+use_HighD_test: False
+total_highd_test_episode: 200  # 使用HighD时总的episode数目
+using_only_init_HD: False   # 背景车辆的行为由IDM控制，HighD仅用于生成初始状态
+
+log_dir: "./logs/sac_con/"
+model_dir: "./models/sac_con/"
+data_record_dir: "./data_record/sac_con/"
+
+# 暂时未用到
+is_pure_HD: False
+getting_chosen_hd_speed: False
+using_IDM_EV: False
